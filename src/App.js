@@ -1,7 +1,7 @@
 import "./styles.css";
 import { Button } from "@material-ui/core";
 import { Dexie } from "dexie";
-import { DataGrid } from "@material-ui/data-grid";
+import { DataGrid, GridToolbar } from "@material-ui/data-grid";
 import { useDexie, useDexieTable } from "use-dexie";
 
 export default function App() {
@@ -10,28 +10,32 @@ export default function App() {
     {
       medications:
         "++id,&[brand_name+strength+unity], name, manufacturer, quantity",
-      prescriptions: "[drug_name+dose+unity], days"
+      prescriptions: "++id, &[drug_name+dose+unity], days"
     },
     (db) => {
-      db.medications.clear();
-      db.medications.bulkPut([
-        {
-          brand_name: "Tachipirina",
-          strength: 1000,
-          unity: "mg",
-          name: "paracetamolo",
-          manufacturer: "Angelini",
-          quantity: 20
-        },
-        {
-          brand_name: "Cardioaspirin",
-          strength: 100,
-          unity: "mg",
-          name: "aspirina",
-          manufacturer: "Bayer",
-          quantity: 30
+      db.medications.count().then((count) => {
+        if (count === 0) {
+          db.medications.bulkPut([
+            {
+              brand_name: "Tachipirina",
+              strength: 1000,
+              unity: "mg",
+              name: "paracetamolo",
+              manufacturer: "Angelini",
+              quantity: 20
+            },
+            {
+              brand_name: "Cardioaspirin",
+              strength: 100,
+              unity: "mg",
+              name: "aspirina",
+              manufacturer: "Bayer",
+              quantity: 30
+            }
+          ]);
         }
-      ]);
+      });
+
       db.prescriptions.clear();
       db.prescriptions.bulkPut([
         { drug_name: "aspirina", dose: 100, unity: "mg", days: 1 },
@@ -45,6 +49,7 @@ export default function App() {
 
   const meds_cols = [
     { field: "brand_name", headerName: "Brand Name", width: 160 },
+    { field: "name", headerName: "Drug Name", width: 160 },
     {
       field: "fullStrength",
       headerName: "Strength",
@@ -55,6 +60,26 @@ export default function App() {
     },
     { field: "quantity", headerName: "Tablets" }
   ];
+  const pres_cols = [
+    { field: "drug_name", headerName: "Drug", width: 160 },
+    {
+      field: "fullDose",
+      headerName: "Dose",
+      sortable: false,
+      valueGetter: (params) =>
+        `${params.getValue("dose")} ${params.getValue("unity")}`,
+      width: 120
+    },
+    {
+      field: "every",
+      headerName: "Every",
+      sortable: false,
+      valueGetter: (params) =>
+        `${params.getValue("days")} day${
+          params.getValue("days") > 1 ? "s" : ""
+        }`
+    }
+  ];
 
   return (
     <div className="App">
@@ -64,17 +89,14 @@ export default function App() {
         Hello World
       </Button>
       <hr />
-      <div style={{ height: 400, width: "100%" }}>
+      <div style={{ height: 400, width: "100%", marginBottom: 80 }}>
+        <h2>Medications</h2>
         <DataGrid rows={medications} columns={meds_cols} pageSize={5} />
       </div>
-      <hr />
-      {prescriptions.map((prescription) => (
-        <span>
-          {prescription.drug_name}: {prescription.dose} {prescription.unity}{" "}
-          every {prescription.days} {`day${prescription.days > 1 ? "s" : ""}`}
-          <br />
-        </span>
-      ))}
+      <div style={{ height: 400, width: "100%" }}>
+        <h2>Prescriptions</h2>
+        <DataGrid rows={prescriptions} columns={pres_cols} pageSize={5} />
+      </div>
     </div>
   );
 }
