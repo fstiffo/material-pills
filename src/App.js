@@ -9,15 +9,16 @@ export default function App() {
     "PILLS_DB",
     {
       medications:
-        "++id,&[brand_name+strength+unity], name, manufacturer, quantity",
-      prescriptions: "++id, &[drug_name+dose+unity], days"
+        "++id,&[brandName+strength+unity], name, manufacturer, quantity",
+      prescriptions: "++id, &[drugName+dose+unity], days",
+      
     },
     (db) => {
       db.medications.count().then((count) => {
         if (count === 0) {
           db.medications.bulkPut([
             {
-              brand_name: "Tachipirina",
+              brandName: "Tachipirina",
               strength: 1000,
               unity: "mg",
               name: "paracetamolo",
@@ -25,7 +26,7 @@ export default function App() {
               quantity: 20
             },
             {
-              brand_name: "Cardioaspirin",
+              brandName: "Cardioaspirin",
               strength: 100,
               unity: "mg",
               name: "aspirina",
@@ -38,8 +39,8 @@ export default function App() {
 
       db.prescriptions.clear();
       db.prescriptions.bulkPut([
-        { drug_name: "aspirina", dose: 100, unity: "mg", days: 1 },
-        { drug_name: "paracetamolo", dose: 500, unity: "mg", days: 7 }
+        { drugName: "aspirina", dose: 100, unity: "mg", days: 1 },
+        { drugName: "paracetamolo", dose: 500, unity: "mg", days: 7 }
       ]);
     }
   );
@@ -47,8 +48,8 @@ export default function App() {
   const medications = useDexieTable("medications") || [];
   const prescriptions = useDexieTable("prescriptions") || [];
 
-  const meds_cols = [
-    { field: "brand_name", headerName: "Brand Name", width: 160 },
+  const medsCols = [
+    { field: "brandName", headerName: "Brand Name", width: 160 },
     { field: "name", headerName: "Drug Name", width: 160 },
     {
       field: "fullStrength",
@@ -60,8 +61,8 @@ export default function App() {
     },
     { field: "quantity", headerName: "Tablets" }
   ];
-  const pres_cols = [
-    { field: "drug_name", headerName: "Drug", width: 160 },
+  const presCols = [
+    { field: "drugName", headerName: "Drug", width: 160 },
     {
       field: "fullDose",
       headerName: "Dose",
@@ -91,11 +92,11 @@ export default function App() {
       <hr />
       <div style={{ height: 400, width: "100%", marginBottom: 80 }}>
         <h2>Medications</h2>
-        <DataGrid rows={medications} columns={meds_cols} pageSize={5} />
+        <DataGrid rows={medications} columns={medsCols} pageSize={5} />
       </div>
       <div style={{ height: 400, width: "100%" }}>
         <h2>Prescriptions</h2>
-        <DataGrid rows={prescriptions} columns={pres_cols} pageSize={5} />
+        <DataGrid rows={prescriptions} columns={presCols} pageSize={5} />
       </div>
     </div>
   );
