@@ -25,7 +25,11 @@ export default function PurchasesTable(props) {
         editable={{
           onRowAdd: (newData) => props.db.purchases.add(newData),
           onRowUpdate: (newData, oldData) =>
-            props.db.purchases.update(oldData.id, newData),
+            props.db.purchases.update(oldData.id, {
+              date: newData.date,
+              medicationId: newData.medicationId,
+              quantity: newData.quantity
+            }),
           onRowDelete: (oldData) => props.db.purchases.delete(oldData.id)
         }}
         data={purchases}
