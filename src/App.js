@@ -4,6 +4,7 @@ import Dexie from "dexie";
 import relationships from "dexie-relationships";
 import dayjs from "dayjs";
 import MedicationsGrid from "./MedicationsGrid";
+import MedicationsTable from "./MedicationsTable";
 import PrescriptionsGrid from "./PrescriptionsGrid";
 import PurchasesGrid from "./PurchasesGrid";
 
@@ -66,9 +67,9 @@ export default function App() {
         Hello World
       </Button>
       <hr />
-      <MedicationsGrid db={db} />
+      <MedicationsTable db={db} />
       <PrescriptionsGrid db={db} />
-      <PurchasesGrid db={db} />}
+      <PurchasesGrid db={db} />
     </div>
   );
 }
