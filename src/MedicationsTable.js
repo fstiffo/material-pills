@@ -16,6 +16,12 @@ export default function MedicationsTable(props) {
           { title: "Unity", field: "unity" },
           { title: "Qty", field: "quantity", type: "numeric" }
         ]}
+        editable={{
+          onRowAdd: (newData) => props.db.medications.add(newData),
+          onRowUpdate: (newData, oldData) =>
+            props.db.medications.update(oldData.id, newData),
+          onRowDelete: (oldData) => props.db.medications.delete(oldData.id)
+        }}
         data={medications}
         title={"Medications"}
       />
