@@ -3,10 +3,9 @@ import { Button } from "@material-ui/core";
 import Dexie from "dexie";
 import relationships from "dexie-relationships";
 import dayjs from "dayjs";
-import MedicationsGrid from "./MedicationsGrid";
 import MedicationsTable from "./MedicationsTable";
-import PrescriptionsGrid from "./PrescriptionsGrid";
-import PurchasesGrid from "./PurchasesGrid";
+import PrescriptionsTable from "./PrescriptionsTable";
+import PurchasesTable from "./PurchasesTable";
 
 const db = new Dexie("PILLS_DB", { addons: [relationships] });
 
@@ -68,8 +67,8 @@ export default function App() {
       </Button>
       <hr />
       <MedicationsTable db={db} />
-      <PrescriptionsGrid db={db} />
-      <PurchasesGrid db={db} />
+      <PrescriptionsTable db={db} />
+      <PurchasesTable db={db} />
     </div>
   );
 }
