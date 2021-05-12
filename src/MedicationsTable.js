@@ -10,7 +10,7 @@ export default function MedicationsTable(props) {
       <MaterialTable
         columns={[
           { title: "Id", field: "id", hidden: true },
-          { title: "Brand Name", field: "brandName" },
+          { title: "Brand Name", field: "brandName", defaultSort: "asc" },
           { title: "Name", field: "name" },
           { title: "Strength", field: "strength", type: "numeric" },
           { title: "Unity", field: "unity" },

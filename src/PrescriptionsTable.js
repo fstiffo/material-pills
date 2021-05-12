@@ -13,7 +13,7 @@ export default function PrescriptionsTable(props) {
       <MaterialTable
         columns={[
           { title: "Id", field: "id", hidden: true },
-          { title: "Drug", field: "drugName" },
+          { title: "Drug", field: "drugName", defaultSort: "asc" },
           { title: "Dose Strenght", field: "dose", type: "numeric" },
           { title: "Dose Unity", field: "unity" },
           { title: "Every # day(s)", field: "days", type: "numeric" }

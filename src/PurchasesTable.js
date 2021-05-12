@@ -1,5 +1,6 @@
 import MaterialTable from "material-table";
 import { useLiveQuery } from "dexie-react-hooks";
+import dayjs from "dayjs";
 
 export default function PurchasesTable(props) {
   const purchases = useLiveQuery(
@@ -12,13 +13,20 @@ export default function PurchasesTable(props) {
   return (
     <div style={{ maxWidth: "100%" }}>
       <MaterialTable
+        title={"Purchases"}
         columns={[
           { title: "Id", field: "id", hidden: true },
-          { title: "Date", field: "date", type: "date" },
+          {
+            title: "Date",
+            field: "date",
+            type: "date",
+            customSort: (a, b) =>
+              dayjs(a.date).valueOf() - dayjs(b.date).valueOf(),
+            defaultSort: "desc"
+          },
           {
             title: "Medication",
             field: "medicationId",
-            type: "numeric",
             lookup: Object.fromEntries(
               medications.map((medication) => [
                 medication.id,
@@ -44,7 +52,7 @@ export default function PurchasesTable(props) {
           onRowDelete: (oldData) => props.db.purchases.delete(oldData.id)
         }}
         data={purchases}
-        title={"Purchases"}
+        options={{ sorting: true }}
       />
     </div>
   );
