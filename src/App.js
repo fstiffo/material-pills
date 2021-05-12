@@ -17,6 +17,7 @@ db.version(2).stores({
 
 db.transaction("rw", db.medications, db.prescriptions, db.purchases, () => {
   // Medications
+  // db.medications.clear();
   db.medications.count().then((count) => {
     if (count === 0) {
       db.medications.bulkPut([
@@ -40,18 +41,22 @@ db.transaction("rw", db.medications, db.prescriptions, db.purchases, () => {
     }
   });
   // Prescriptions
-  db.prescriptions.clear();
-  db.prescriptions.bulkPut([
-    { drugName: "aspirina", dose: 100, unity: "mg", days: 1 },
-    { drugName: "paracetamolo", dose: 500, unity: "mg", days: 7 }
-  ]);
+  // db.prescriptions.clear();
+  db.prescriptions.count().then((count) => {
+    if (count === 0) {
+      db.prescriptions.bulkPut([
+        { drugName: "aspirina", dose: 100, unity: "mg", days: 1 },
+        { drugName: "paracetamolo", dose: 500, unity: "mg", days: 7 }
+      ]);
+    }
+  });
   // Purchases
-  db.purchases.clear();
+  // db.purchases.clear();
   db.purchases.count().then((count) => {
     if (count === 0) {
       db.purchases.bulkPut([
-        { medicationId: 1, quantity: 1, date: dayjs().format() },
-        { medicationId: 2, quantity: 3, date: dayjs().format() }
+        { medicationId: 11, quantity: 1, date: dayjs().format() },
+        { medicationId: 12, quantity: 3, date: dayjs().format() }
       ]);
     }
   });

@@ -6,7 +6,8 @@ export default function PurchasesTable(props) {
     () => props.db.purchases.with({ medication: "medicationId" }),
     []
   );
-  if (!purchases) return null;
+  const medications = useLiveQuery(() => props.db.medications.toArray(), []);
+  if (!medications || !purchases) return null;
 
   return (
     <div style={{ maxWidth: "100%" }}>
@@ -14,12 +15,22 @@ export default function PurchasesTable(props) {
         columns={[
           { title: "Id", field: "id", hidden: true },
           { title: "Date", field: "date", type: "date" },
-          { title: "Medication ID", field: "medicationId", type: "numeric" },
+          {
+            title: "Medication",
+            field: "medicationId",
+            type: "numeric",
+            lookup: Object.fromEntries(
+              medications.map((medication) => [
+                medication.id,
+                medication.brandName
+              ])
+            )
+          } /* 
           {
             title: "Medication Name",
             field: "medication.brandName",
             editable: "never"
-          },
+          }, */,
           { title: "Qty", field: "quantity", type: "numeric" }
         ]}
         editable={{
@@ -27,7 +38,7 @@ export default function PurchasesTable(props) {
           onRowUpdate: (newData, oldData) =>
             props.db.purchases.update(oldData.id, {
               date: newData.date,
-              medicationId: newData.medicationId,
+              medicationId: Number(newData.medicationId),
               quantity: newData.quantity
             }),
           onRowDelete: (oldData) => props.db.purchases.delete(oldData.id)
