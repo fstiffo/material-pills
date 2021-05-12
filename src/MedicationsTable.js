@@ -20,7 +20,21 @@ export default function MedicationsTable(props) {
           onRowAdd: (newData) => props.db.medications.add(newData),
           onRowUpdate: (newData, oldData) =>
             props.db.medications.update(oldData.id, newData),
-          onRowDelete: (oldData) => props.db.medications.delete(oldData.id)
+          onRowDelete: (oldData) =>
+            new Promise((resolve, reject) => {
+              props.db.purchases
+                .get({ medicationId: oldData.id })
+                .then((result) => {
+                  console.log(result);
+                  if (!result) resolve(props.db.medications.delete(oldData.id));
+                  else {
+                    alert(
+                      `Sorry is it impossibile to delete ${oldData.brandName}, there is a purchase that references this medication!`
+                    );
+                    resolve();
+                  }
+                });
+            })
         }}
         data={medications}
         title={"Medications"}
