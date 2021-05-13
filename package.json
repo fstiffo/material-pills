@@ -10,6 +10,9 @@
   "dependencies": {
     "@material-ui/core": "4.11.4",
     "@material-ui/data-grid": "4.0.0-alpha.27",
+    "@material-ui/icons": "4.11.2",
+    "@material-ui/styles": "4.11.4",
+    "@types/react-router-dom": "5.1.7",
     "dayjs": "1.10.4",
     "dexie": "3.1.0-alpha.10",
     "dexie-react-hooks": "1.0.6",
@@ -19,6 +22,8 @@
     "material-table": "1.69.3",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-router": "5.2.0",
+    "react-router-dom": "5.2.0",
     "react-scripts": "4.0.3"
   },
   "devDependencies": {
