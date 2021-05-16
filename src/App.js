@@ -138,13 +138,13 @@ export default function App() {
           className={classes.appBar}
         >
           <Toolbar className={classes.toolbar}>
-            <Icon color="primary">scatter_plot</Icon>
+           
             <Typography
               variant="h6"
               color="inherit"
               noWrap
               className={classes.toolbarTitle}
-            >
+            > <Icon color="primary" style={{ fontSize: "1.2em" }}>scatter_plot</Icon>
               Pills
             </Typography>
             <nav>
@@ -199,7 +199,7 @@ export default function App() {
               <PurchasesTable db={db} />
             </Route>
             <Route path="/">
-              <Home classes={classes} />
+              <Home classes={classes} db={db}/>
             </Route>
           </Switch>
         </Container>
