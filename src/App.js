@@ -138,13 +138,16 @@ export default function App() {
           className={classes.appBar}
         >
           <Toolbar className={classes.toolbar}>
-           
             <Typography
               variant="h6"
               color="inherit"
               noWrap
               className={classes.toolbarTitle}
-            > <Icon color="primary" style={{ fontSize: "1.2em" }}>scatter_plot</Icon>
+            >
+              {" "}
+              <Icon color="primary" style={{ fontSize: "1.2em" }}>
+                scatter_plot
+              </Icon>
               Pills
             </Typography>
             <nav>
@@ -173,7 +176,10 @@ export default function App() {
                 Purchases
               </Link>
             </nav>
-            <Route exact path={["/medications", "/prescriptions", "/purchases"]}>
+            <Route
+              exact
+              path={["/medications", "/prescriptions", "/purchases"]}
+            >
               <Button
                 href="/"
                 color="primary"
@@ -199,7 +205,7 @@ export default function App() {
               <PurchasesTable db={db} />
             </Route>
             <Route path="/">
-              <Home classes={classes} db={db}/>
+              <Home classes={classes} db={db} />
             </Route>
           </Switch>
         </Container>

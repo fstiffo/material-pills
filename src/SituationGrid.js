@@ -1,11 +1,10 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import { Button } from "@material-ui/core";
+import WarningRounded from "@material-ui/icons/WarningRounded";
 
 import dayjs from "dayjs";
 import AdvancedFormat from "dayjs/plugin/advancedFormat"; // load on demand
@@ -37,16 +36,24 @@ export default function SituationGrid(props) {
   );
 
   if (!purchases) return null;
-  console.log(purchases[0].medication);
+  console.log(purchases);
   purchases.sort((b, a) => dayjs(a.date).valueOf() - dayjs(b.date).valueOf());
   const firstPurchase = purchases.slice(-1)[0];
-  console.log(purchases);
-  const daysFromFirstPurchase = dayjs().diff(dayjs(firstPurchase.date), "day");
-  const purchasedPills = purchases
-    .map((p) => p.medication.quantity * p.quantity)
-    .reduce((a, b) => a + b);
-  const consumedPills =
-    (daysFromFirstPurchase * prescription.dose) / prescription.days;
+  const daysFromFirstPurchase =
+    purchases.length > 0 ? dayjs().diff(dayjs(firstPurchase.date), "day") : 0;
+  const purchasedDoses =
+    purchases.length > 0
+      ? Math.floor(
+          purchases
+            .map(
+              (p) => p.medication.strength * p.medication.quantity * p.quantity
+            )
+            .reduce((a, b) => a + b) / prescription.dose
+        )
+      : 0;
+  const consumedDoses = Math.floor(daysFromFirstPurchase / prescription.days);
+  const daysLeft = (purchasedDoses - consumedDoses) * prescription.days;
+  const alert = daysLeft < 8;
 
   return (
     <Grid
@@ -62,38 +69,39 @@ export default function SituationGrid(props) {
           subheader={dosage}
           titleTypographyProps={{ align: "center" }}
           subheaderTypographyProps={{ align: "center" }}
-          //action={tier.title === "Pro" ? <StarIcon /> : null}
+          action={alert ? <WarningRounded style={{ fill: "red" }} /> : null}
           className={classes.cardHeader}
         />
         <CardContent>
           <div className={classes.cardPricing}>
-            <Typography component="h2" variant="h4" color="textPrimary">
-              {`${daysFromFirstPurchase} days left`}
+            <Typography
+              component="h2"
+              variant="h4"
+              color={alert ? "error" : "textPrimary"}
+            >
+              {`${daysLeft} days left`}
             </Typography>
-            <Typography variant="h6" color="textSecondary">
-              /{consumedPills} pills
+            <Typography variant="h6" color={alert ? "error" : "textSecondary"}>
+              /{purchasedDoses - consumedDoses} doses
             </Typography>
           </div>
-          <ul>
-            {purchases.slice(0, 3).map((purchase) => (
-              <Typography
-                component="li"
-                variant="subtitle1"
-                align="center"
-                key={purchase.id}
-              >
-                {`${dayjs(purchase.date).format("MM/DD/YYYY")} ${
-                  purchase.medication.brandName
-                }`}
-              </Typography>
-            ))}
-          </ul>
+          <Typography component="div" align="center">
+            <ul>
+              {purchases.slice(0, 3).map((purchase) => (
+                <Typography
+                  component="li"
+                  variant="subtitle1"
+                  align="left"
+                  key={purchase.id}
+                >
+                  {`${dayjs(purchase.date).format("MM/DD/YYYY")} ${
+                    purchase.quantity
+                  } ${purchase.medication.brandName}`}
+                </Typography>
+              ))}
+            </ul>
+          </Typography>
         </CardContent>
-        <CardActions>
-          <Button fullWidth variant={"contained"} color="primary">
-            {"tier.buttonText"}
-          </Button>
-        </CardActions>
       </Card>
     </Grid>
   );
