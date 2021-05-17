@@ -7,6 +7,11 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { Button } from "@material-ui/core";
 
+import dayjs from "dayjs";
+import AdvancedFormat from "dayjs/plugin/advancedFormat"; // load on demand
+
+dayjs.extend(AdvancedFormat); // use plugin
+
 export default function SituationGrid(props) {
   const classes = props.classes;
 
@@ -14,9 +19,34 @@ export default function SituationGrid(props) {
   const dosage = `${prescription.dose} ${prescription.unity}${` every ${
     prescription.days < 2 ? "day" : `${prescription.days} days`
   }`}`;
-  console.log(prescription);
-  const medications = useLiveQuery(() => props.db.medications.toArray(), []);
-  if (!medications) return null;
+
+  // Find purchases of medications with the prescribed drug
+  const purchases = useLiveQuery(
+    () =>
+      props.db.medications
+        .where("name")
+        .equals(prescription.drugName)
+        .toArray()
+        .then((medications) =>
+          props.db.purchases
+            .where("medicationId")
+            .anyOf(medications.map((m) => m.id))
+            .with({ medication: "medicationId" })
+        ),
+    []
+  );
+
+  if (!purchases) return null;
+  console.log(purchases[0].medication);
+  purchases.sort((b, a) => dayjs(a.date).valueOf() - dayjs(b.date).valueOf());
+  const firstPurchase = purchases.slice(-1)[0];
+  console.log(purchases);
+  const daysFromFirstPurchase = dayjs().diff(dayjs(firstPurchase.date), "day");
+  const purchasedPills = purchases
+    .map((p) => p.medication.quantity * p.quantity)
+    .reduce((a, b) => a + b);
+  const consumedPills =
+    (daysFromFirstPurchase * prescription.dose) / prescription.days;
 
   return (
     <Grid
@@ -37,22 +67,24 @@ export default function SituationGrid(props) {
         />
         <CardContent>
           <div className={classes.cardPricing}>
-            <Typography component="h2" variant="h3" color="textPrimary">
-              ${"tier.price"}
+            <Typography component="h2" variant="h4" color="textPrimary">
+              {`${daysFromFirstPurchase} days left`}
             </Typography>
             <Typography variant="h6" color="textSecondary">
-              /mo
+              /{consumedPills} pills
             </Typography>
           </div>
           <ul>
-            {["line 1", "line 2", "line 3"].map((line) => (
+            {purchases.slice(0, 3).map((purchase) => (
               <Typography
                 component="li"
                 variant="subtitle1"
                 align="center"
-                key={line}
+                key={purchase.id}
               >
-                {line}
+                {`${dayjs(purchase.date).format("MM/DD/YYYY")} ${
+                  purchase.medication.brandName
+                }`}
               </Typography>
             ))}
           </ul>

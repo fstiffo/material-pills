@@ -42,7 +42,12 @@ export default function PurchasesTable(props) {
           { title: "Qty", field: "quantity", type: "numeric" }
         ]}
         editable={{
-          onRowAdd: (newData) => props.db.purchases.add(newData),
+          onRowAdd: (newData) =>
+            props.db.purchases.add({
+              data: newData.date,
+              medicationId: Number(newData.medicationId),
+              quantity: newData.quantity
+            }),
           onRowUpdate: (newData, oldData) =>
             props.db.purchases.update(oldData.id, {
               date: newData.date,
