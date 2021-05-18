@@ -22,7 +22,7 @@ export default function Home(props) {
           align="center"
           color="textPrimary"
           gutterBottom
-          style={{fontFamily: "Pattaya"}}
+          style={{ fontFamily: "Pattaya" }}
         >
           <Icon style={{ fontSize: "1em" }} color="primary">
             scatter_plot
@@ -38,10 +38,15 @@ export default function Home(props) {
           Quickly take control of your supply of pills
         </Typography>
       </Container>
-      <Container maxWidth="md" component="main">
+      <Container maxWidth="lg" component="main">
         <Grid container spacing={5} alignItems="flex-end">
-        {prescriptions.map((prescription) => 
-        <SituationGrid db={props.db} classes={classes} prescription={prescription}/>)}
+          {prescriptions.map((prescription) => (
+            <SituationGrid
+              db={props.db}
+              classes={classes}
+              prescription={prescription}
+            />
+          ))}
         </Grid>
       </Container>
     </div>
