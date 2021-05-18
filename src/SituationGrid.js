@@ -53,7 +53,10 @@ export default function SituationGrid(props) {
       : 0;
   const consumedDoses = Math.floor(daysFromFirstPurchase / prescription.days);
   const daysLeft = (purchasedDoses - consumedDoses) * prescription.days;
+  let cardHeaderClass = classes.cardHeader;
+  if  (daysLeft < 30) cardHeaderClass = classes.cardHeaderAttention ;
   const alert = daysLeft < 8;
+  if (alert) cardHeaderClass = classes.cardHeaderAlert;
 
   return (
     <Grid
@@ -70,7 +73,7 @@ export default function SituationGrid(props) {
           titleTypographyProps={{ align: "center" }}
           subheaderTypographyProps={{ align: "center" }}
           action={alert ? <WarningRounded style={{ fill: "red" }} /> : null}
-          className={classes.cardHeader}
+          className={cardHeaderClass}
         />
         <CardContent>
           <div className={classes.cardPricing}>

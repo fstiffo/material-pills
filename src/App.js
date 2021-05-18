@@ -29,7 +29,8 @@ const useStyles = makeStyles((theme) => ({
       margin: 0,
       padding: 0,
       listStyle: "none"
-    }
+    },
+    h2: { fontFamily: "Pattaya" }
   },
   appBar: {
     borderBottom: `1px solid ${theme.palette.divider}`
@@ -38,7 +39,8 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: "wrap"
   },
   toolbarTitle: {
-    flexGrow: 1
+    flexGrow: 1,
+    fontFamily: "Pattaya"
   },
   link: {
     margin: theme.spacing(1, 1.5)
@@ -48,9 +50,17 @@ const useStyles = makeStyles((theme) => ({
   },
   cardHeader: {
     backgroundColor:
+      theme.palette.type === "light" ? "#d4ffaa" : theme.palette.success.dark
+  },
+  cardHeaderAttention: {
+    backgroundColor:
       theme.palette.type === "light"
         ? theme.palette.grey[200]
         : theme.palette.grey[700]
+  },
+  cardHeaderAlert: {
+    backgroundColor:
+      theme.palette.type === "light" ? "#ffcccc" : theme.palette.error.dark
   },
   cardPricing: {
     display: "flex",
@@ -139,13 +149,16 @@ export default function App() {
         >
           <Toolbar className={classes.toolbar}>
             <Typography
-              variant="h6"
+              variant="h4"
               color="inherit"
               noWrap
               className={classes.toolbarTitle}
             >
               {" "}
-              <Icon color="primary" style={{ fontSize: "1.2em" }}>
+              <Icon
+                color="primary"
+                style={{ fontSize: "1.2em", paddingTop: "5px" }}
+              >
                 scatter_plot
               </Icon>
               Pills

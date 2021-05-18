@@ -22,6 +22,7 @@ export default function Home(props) {
           align="center"
           color="textPrimary"
           gutterBottom
+          style={{fontFamily: "Pattaya"}}
         >
           <Icon style={{ fontSize: "1em" }} color="primary">
             scatter_plot
