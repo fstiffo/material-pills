@@ -11,7 +11,8 @@ export default function MedicationsTable(props) {
         columns={[
           { title: "Id", field: "id", hidden: true },
           { title: "Brand Name", field: "brandName", defaultSort: "asc" },
-          { title: "Name", field: "name" },
+          { title: "Manufacturer", field: "manufacturer" },
+          { title: "Drug Name", field: "name" },
           { title: "Strength", field: "strength", type: "numeric" },
           { title: "Unity", field: "unity" },
           { title: "Qty", field: "quantity", type: "numeric" }
