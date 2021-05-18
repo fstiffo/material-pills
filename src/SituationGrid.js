@@ -54,7 +54,7 @@ export default function SituationGrid(props) {
   const consumedDoses = Math.floor(daysFromFirstPurchase / prescription.days);
   const daysLeft = (purchasedDoses - consumedDoses) * prescription.days;
   let cardHeaderClass = classes.cardHeader;
-  if  (daysLeft < 30) cardHeaderClass = classes.cardHeaderAttention ;
+  if (daysLeft < 30) cardHeaderClass = classes.cardHeaderAttention;
   const alert = daysLeft < 8;
   if (alert) cardHeaderClass = classes.cardHeaderAlert;
 
@@ -93,13 +93,13 @@ export default function SituationGrid(props) {
               {purchases.slice(0, 3).map((purchase) => (
                 <Typography
                   component="li"
-                  variant="subtitle1"
+                  variant="body2"
                   align="left"
                   key={purchase.id}
                 >
-                  {`${dayjs(purchase.date).format("MM/DD/YYYY")} ${
-                    purchase.quantity
-                  } ${purchase.medication.brandName}`}
+                  {`${dayjs(purchase.date).format("MM/DD/YYYY")} `}
+                  <strong>{purchase.quantity}</strong>
+                  {` ${purchase.medication.brandName}`}
                 </Typography>
               ))}
             </ul>
