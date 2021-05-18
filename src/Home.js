@@ -38,7 +38,7 @@ export default function Home(props) {
           Quickly take control of your supply of pills
         </Typography>
       </Container>
-      <Container maxWidth="lg" component="main">
+      <Container maxWidth="xl" component="main">
         <Grid container spacing={5} alignItems="flex-end">
           {prescriptions.map((prescription) => (
             <SituationGrid
