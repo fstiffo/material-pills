@@ -26,6 +26,7 @@ export default function PrescriptionsTable(props) {
         }}
         data={prescriptions}
         title={"Prescriptions"}
+        options={{ pageSize: 10 }}
       />
     </div>
   );

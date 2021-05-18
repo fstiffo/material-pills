@@ -57,7 +57,7 @@ export default function PurchasesTable(props) {
           onRowDelete: (oldData) => props.db.purchases.delete(oldData.id)
         }}
         data={purchases}
-        options={{ sorting: true }}
+        options={{ sorting: true, pageSize: 10 }}
       />
     </div>
   );

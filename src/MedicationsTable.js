@@ -16,7 +16,7 @@ export default function MedicationsTable(props) {
           { title: "Strength", field: "strength", type: "numeric" },
           { title: "Unity", field: "unity" },
           { title: "Qty", field: "quantity", type: "numeric" }
-        ]}
+        ]}        
         editable={{
           onRowAdd: (newData) => props.db.medications.add(newData),
           onRowUpdate: (newData, oldData) =>
@@ -39,6 +39,7 @@ export default function MedicationsTable(props) {
         }}
         data={medications}
         title={"Medications"}
+        options={{pageSize: 10}}
       />
     </div>
   );
